@@ -47,7 +47,7 @@
 | -f | 设置需要看的列数 |
 | -d | 设置间隔符号 |
 
-  ` cut -d: -f1 /etc/passwd `
+`cut -d: -f1 /etc/passwd`
   
 9. **diff命令**：比较多个文本文件的差异
 
