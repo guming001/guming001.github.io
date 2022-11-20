@@ -77,3 +77,18 @@ userdel命令用于删除用户，格式为“userdel [选项] 用户名”。
 文件的读、写、执行权限可以简写为rwx，亦可分别用数字4、2、1来表示，文件所有者，所属组及其他用户权限之间无关联。
 
 ![image00472](https://user-images.githubusercontent.com/2433557/202891133-d47591be-76dc-44ea-ac41-0112b3660e22.png)
+
+## 文件的特殊权限
+### SUID
+SUID是一种对二进制程序进行设置的特殊权限，可以让二进制程序的执行者临时拥有属主的权限（仅对拥有执行权限的二进制程序有效）。例如，所有用户都可以执行passwd命令来修改自己的用户密码，而用户密码保存在/etc/shadow文件中。仔细查看这个文件就会发现它的默认权限是000，也就是说除了root管理员以外，所有用户都没有查看或编辑该文件的权限。但是，在使用passwd命令时如果加上SUID特殊权限位，就可让普通用户临时获得程序所有者的身份，把变更的密码信息写入到shadow文件中。
+
+查看passwd命令属性时发现所有者的权限由rwx变成了rws，其中x改变成s就意味着该文件被赋予了SUID权限。另外有读者会好奇，那么如果原本的权限是rw-呢？如果原先权限位上没有x执行权限，那么被赋予特殊权限后将变成大写的S。
+
+**一般不要去动SUID权限**
+
+```
+[root@linuxprobe ~]# ls -l /etc/shadow
+----------. 1 root root 1004 Jan 3 06:23 /etc/shadow
+[root@linuxprobe ~]# ls -l /bin/passwd
+-rwsr-xr-x. 1 root root 27832 Jan 29 2017 /bin/passwd
+```
